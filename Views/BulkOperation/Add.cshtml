@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "Add";
+}
+
+<h1>Add bulk insert</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form enctype="multipart/form-data" asp-action="Add">
+            <dl>
+                <dt>
+                    <label class="control-label">Upload Excel file *</label>
+                </dt>
+                <dd>
+                    <input id="formFile" name="formFile" type="file" accept=".xlsx" required class="form-control-file">
+                </dd>
+            </dl>
+            <input type="submit" value="Upload" class="btn btn-primary" />
+        </form>
+    </div>
+</div>
