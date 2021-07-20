@@ -43,15 +43,20 @@ namespace Carrental.Controllers
         {
             try
             {
-                if(ModelState.IsValid){
-                    _carTypeRepository.Add(carType);
-                  return RedirectToAction(nameof(Index));
+                if(ModelState.IsValid)
+                {
+                   var isAdded=  _carTypeRepository.Add(carType);
+                    if (isAdded)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    ViewBag.ErrorMessage = "Error in saving Data";
                 }
-                return View();
+                return View(carType);
             }
             catch(Exception ex)
             {
-                return View();
+                return View(carType);
             }
         }
 
@@ -75,8 +80,12 @@ namespace Carrental.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _carTypeRepository.Update(carType);
-                    return RedirectToAction(nameof(Index));
+                   var isEdited = _carTypeRepository.Update(carType);
+                    if (isEdited)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    ViewBag.ErrorMessage = "Error in editing Data";
                 }
                 return View();
             }
@@ -104,12 +113,17 @@ namespace Carrental.Controllers
         {
             try
             {
-                _carTypeRepository.Delete(carType);
-                return RedirectToAction(nameof(Index));
+                var isDelete = _carTypeRepository.Delete(carType);
+                if (isDelete)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewBag.ErrorMessage = "Error in deleting Data";
+                return View(carType);
             }
             catch
             {
-                return View();
+                return View(carType);
             }
         }
     }

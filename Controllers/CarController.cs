@@ -52,14 +52,18 @@ namespace Carrental.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _carRepository.Add(car);
-                    return RedirectToAction(nameof(Index));
+                    var isAdded = _carRepository.Add(car);
+
+                    if (isAdded)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    ViewBag.ErrorMessage = "Error in saving Data";
                 }
-                else
-                {
-                    var carTypes = _carTypeRepository.GetAll();
-                    car.CarTypes = carTypes;
-                }
+
+                var carTypes = _carTypeRepository.GetAll();
+                car.CarTypes = carTypes;
+
                 return View(car);
             }
             catch (Exception ex)
@@ -90,14 +94,18 @@ namespace Carrental.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _carRepository.Update(car);
-                    return RedirectToAction(nameof(Index));
+
+                    var isUpdated = _carRepository.Update(car);
+                    if (isUpdated)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    ViewBag.ErrorMessage = "Error in updating Data";
                 }
-                else
-                {
-                    var carTypes = _carTypeRepository.GetAll();
-                    car.CarTypes = carTypes;
-                }
+
+                var carTypes = _carTypeRepository.GetAll();
+                car.CarTypes = carTypes;
+
                 return View(car);
             }
             catch (Exception ex)
@@ -124,12 +132,17 @@ namespace Carrental.Controllers
         {
             try
             {
-                _carRepository.Delete(car);
-                return RedirectToAction(nameof(Index));
+               var isDeleted = _carRepository.Delete(car);
+                if (isDeleted)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewBag.ErrorMessage = "Error in deleting Data";
+                return View(car);
             }
             catch
             {
-                return View();
+                return View(car);
             }
         }
     }

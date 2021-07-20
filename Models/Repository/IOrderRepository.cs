@@ -13,5 +13,6 @@ namespace Carrental.Models
         bool Add(IEnumerable<OrderViewModel> orders);
         bool Delete(OrderViewModel order);
         bool Update(OrderViewModel order);
+        IEnumerable<OrderViewModel> FindByCarId(int id);
     }
 }

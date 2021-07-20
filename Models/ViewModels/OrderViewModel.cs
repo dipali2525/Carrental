@@ -15,9 +15,9 @@ namespace Carrental.Models
         public string CarName { get; set; }
         public IEnumerable<CarViewModel> Cars { get; set; } = new List<CarViewModel>();
         [Display(Name = "Start Date")]
-        public DateTime StartDate { get; set; }
+        public DateTime StartDate { get; set; } = DateTime.UtcNow.Date;
         [Display(Name = "End Date")]
-        public DateTime EndDate { get; set; }
+        public DateTime EndDate { get; set; } = DateTime.UtcNow.Date;
         [Display(Name = "Pick Location")]
         public string PickLocation { get; set; }
         [Display(Name = "Drop Location")]

@@ -1,4 +1,5 @@
 ﻿using Carrental.Models;
+using Carrental.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,25 +11,23 @@ namespace Carrental.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly IOrderRepository _orderRepository;
-        private readonly ICarRepository _carRepository;
+        private readonly IOrderService _orderService;
 
-        public OrderController(IOrderRepository orderRepository,ICarRepository carRepository)
+        public OrderController(IOrderService orderService)
         {
-            this._orderRepository = orderRepository;
-            this._carRepository = carRepository;
+            this._orderService = orderService;
         }
         // GET: OrderController
         public ActionResult Index()
         {
-            var list = _orderRepository.GetAll();
+            var list = _orderService.GetAllOrders();
             return View(list);
         }
 
         // GET: OrderController/Details/5
         public ActionResult Details(int id)
         {
-            var car = _orderRepository.Find(id);
+            var car = _orderService.GetOrder(id);
             if (car != null)
             {
                 return View(car);
@@ -39,9 +38,7 @@ namespace Carrental.Controllers
         // GET: OrderController/Create
         public ActionResult Create()
         {
-            var order = new OrderViewModel();
-            var cars = _carRepository.GetAll();
-            order.Cars = cars;
+            var order = _orderService.GetEmptyOrder();
             return View(order);
         }
 
@@ -54,14 +51,17 @@ namespace Carrental.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _orderRepository.Add(order);
-                    return RedirectToAction(nameof(Index));
+
+                    var message = string.Empty;
+                    var isAdded = _orderService.Add(order, out message);
+                    ViewBag.ErrorMessage = message;
+                    if (isAdded)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
                 }
-                else
-                {
-                    var cars = _carRepository.GetAll();
-                    order.Cars = cars;
-                }
+
+                order.Cars = _orderService.GetAllCars();
                 return View(order);
             }
             catch (Exception ex)
@@ -73,11 +73,9 @@ namespace Carrental.Controllers
         // GET: OrderController/Edit/5
         public ActionResult Edit(int id)
         {
-            var order = _orderRepository.Find(id);
+            var order = _orderService.GetOrder(id);
             if (order != null)
             {
-                var cars = _carRepository.GetAll();
-                order.Cars = cars;
                 return View(order);
             }
 
@@ -91,15 +89,19 @@ namespace Carrental.Controllers
         {
             try
             {
+                ViewBag.ErrorMessage = string.Empty;
                 if (ModelState.IsValid)
                 {
-                    _orderRepository.Update(order);
-                    return RedirectToAction(nameof(Index));
+                    var isModified = _orderService.ModifyOrder(order);
+                    if (isModified)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    ViewBag.ErrorMessage = "Error in updating the data";
                 }
                 else
                 {
-                    var cars = _carRepository.GetAll();
-                    order.Cars = cars;
+                    order.Cars = _orderService.GetAllCars();
                 }
                 return View(order);
             }
@@ -112,7 +114,7 @@ namespace Carrental.Controllers
         // GET: OrderController/Delete/5
         public ActionResult Delete(int id)
         {
-            var order = _orderRepository.Find(id);
+            var order = _orderService.GetOrder(id);
             if (order != null)
             {
                 return View(order);
@@ -127,12 +129,18 @@ namespace Carrental.Controllers
         {
             try
             {
-                _orderRepository.Delete(order);
-                return RedirectToAction(nameof(Index));
+                ViewBag.ErrorMessage = string.Empty;
+                var isDeleted = _orderService.RemoveOrder(order);
+                if (isDeleted)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewBag.ErrorMessage = "Error in deleting the data";
+                return View(order);
             }
             catch
             {
-                return View();
+                return View(order);
             }
         }
     }

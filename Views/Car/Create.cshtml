@@ -4,13 +4,13 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Car</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            {
+                <div class="text-danger">@ViewBag.ErrorMessage</div>
+            }
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">

@@ -3,8 +3,15 @@
     ViewData["Title"] = "Add";
 }
 
-<h1>Add bulk insert</h1>
-
+<h1>@ViewBag.Message</h1>
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+    <div class="text-success">@ViewBag.SuccessMessage</div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="text-danger">@ViewBag.ErrorMessage</div>
+}
 <div class="row">
     <div class="col-md-4">
         <form enctype="multipart/form-data" asp-action="Add">

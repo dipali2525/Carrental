@@ -1,4 +1,5 @@
 ﻿using Carrental.Models;
+using Carrental.Services;
 using Carrental.Utility;
 using System.IO;
 
@@ -6,16 +7,16 @@ namespace Carrental.Factories
 {
     public class OrderBulkOperation : IBulkOperation
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderService _orderService;
 
-        public OrderBulkOperation(IOrderRepository orderRepository)
+        public OrderBulkOperation(IOrderService orderService)
         {
-            this._orderRepository = orderRepository;
+            this._orderService = orderService;
         }
         public bool Add(Stream stream)
         {
             var orders = ExcelUtility.GetExcelData<OrderViewModel>(stream);
-            _orderRepository.Add(orders);
+            _orderService.Add(orders);
             return true;
         }
     }

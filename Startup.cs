@@ -1,5 +1,6 @@
 using Carrental.Factories;
 using Carrental.Models;
+using Carrental.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -35,6 +36,8 @@ namespace Carrental
             services.AddScoped<ICarTypeRepository, CarTypeRepository>();
             services.AddScoped<ICarRepository, CarRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+
+            services.AddScoped<IOrderService, OrderService>();
 
             services.AddScoped<CarTypeBulkOperation>()
                 .AddScoped<CarBulkOperation>()

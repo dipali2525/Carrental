@@ -20,11 +20,29 @@ namespace Carrental.Controllers
             this._bulkDataServiceFactory = bulkDataServiceFactory;
         }
         // GET: BulkInsertController
-      
+
         // GET: BulkInsertController/Add/Type
         public ActionResult Add(string id)
         {
+            ViewBag.Message = GetTitle(id);
             return View();
+        }
+        private string GetTitle(string id)
+        {
+            var title = "Upload Excel for";
+            switch (id.ToLower())
+            {
+                case "cartype": title = $"{title} Car Types";
+                    break;
+                case "car":
+                    title = $"{title} Cars";
+                    break;
+                case "order":
+                    title = $"{title} Orders";
+                    break;
+
+            }
+            return title;
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -32,13 +50,22 @@ namespace Carrental.Controllers
         {
             try
             {
+                ViewBag.Message = GetTitle(id);
                 var memoryStream = new MemoryStream();
                 await formFile.CopyToAsync(memoryStream);
                 var bulkOperation = _bulkDataServiceFactory.Add(id);
-                bulkOperation.Add(memoryStream);
+                var isAdded = bulkOperation.Add(memoryStream);
+                if (isAdded)
+                {
+                    ViewBag.SuccessMessage = "Data updated sucessfully";
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Error in updating Data";
+                }
                 return View();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View();
             }
