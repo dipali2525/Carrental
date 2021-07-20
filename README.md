@@ -7,4 +7,5 @@ This is demo project for car rental
 # bulk data insertion
 1. Please use excel placed in wwwroot/files folder.
 2. You can change the data in that excel.
-Note : Please do not change the column name in that excel file.
+
+**Note** : Please do not change the column name in that excel file.
