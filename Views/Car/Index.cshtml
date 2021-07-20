@@ -28,6 +28,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Photo)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarName)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -50,10 +53,13 @@
                 @Html.DisplayFor(modelItem => item.Photo)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.CarName)
+            </td>
+            <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
                 @Html.ActionLink("Details", "Details", new { id = item.ID }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.ID }) |
-                @Html.ActionLink("OrderViewModel","Create","OrderViewModel", new { id = item.ID })
+                @Html.ActionLink("OrderViewModel", "Create", "OrderViewModel", new { id = item.ID })
 
             </td>
         </tr>

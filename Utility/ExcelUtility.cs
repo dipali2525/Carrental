@@ -1,6 +1,7 @@
 ﻿using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -50,8 +51,19 @@ namespace Carrental.Utility
                         var excelCellText =ws.Cells[rowNum, excelHeaderColumnIndex + 1].Value.ToString();
                         if (property != null)
                         {
-                            var value = Convert.ChangeType(excelCellText, property.PropertyType);
-                            property.SetValue(returnObject, value);
+                            if (property.PropertyType == typeof(DateTime))
+                            {
+                                var dateTime = DateTime.ParseExact(excelCellText,"MM/dd/yyyy", CultureInfo.InvariantCulture);
+                               // var value = Convert.ChangeType(dateTime, property.PropertyType);
+
+                                property.SetValue(returnObject, dateTime);
+                            }
+                            else
+                            {
+                                var value = Convert.ChangeType(excelCellText, property.PropertyType);
+
+                                property.SetValue(returnObject, value);
+                            }
                         }
                     }
 

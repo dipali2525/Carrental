@@ -25,7 +25,7 @@ namespace Carrental.Models
 
         public bool Add(CarViewModel car)
         {
-            var sql = "insert into dbo.Car (TypeID,Price,BRAND,Photo) Values(@TypeId,@Price,@Brand,@Photo)";
+            var sql = "insert into dbo.Car (TypeID,Price,BRAND,Photo,CarName) Values(@TypeId,@Price,@Brand,@Photo,@CarName)";
             con.Execute(sql, car);
             return true;
         }
@@ -37,17 +37,21 @@ namespace Carrental.Models
                            new SqlBulkCopy(con))
             {
                 bulkCopy.DestinationTableName =
-                    "dbo.Type";
-                bulkCopy.ColumnMappings.Add("TypeId", "TypeId");
+                    "dbo.Car";
+                bulkCopy.ColumnMappings.Add("TypeId", "TypeID");
                 bulkCopy.ColumnMappings.Add("Price", "Price");
-                bulkCopy.ColumnMappings.Add("Brand", "Brand");
+                bulkCopy.ColumnMappings.Add("Brand", "BRAND");
                 bulkCopy.ColumnMappings.Add("Photo", "Photo");
+                bulkCopy.ColumnMappings.Add("CarName", "CarName");
 
                 try
                 {
                     var sourceTable = cars.ToDataTable();
                     sourceTable.TableName = "SourceTable";
                     sourceTable.Columns.Remove("ID");
+                    sourceTable.Columns.Remove("TypeName");
+                    sourceTable.Columns.Remove("CarTypes");
+
                     sourceTable.AcceptChanges();
                     bulkCopy.WriteToServer(sourceTable);
                 }
@@ -76,21 +80,21 @@ namespace Carrental.Models
 
         public CarViewModel Find(int id)
         {
-            var sql = $"SELECT c.ID,TypeID,Price,BRAND,Photo, t.Title as TypeName FROM dbo.Car as c Join dbo.Type t ON c.TypeID = t.ID  Where c.ID = {id};";
+            var sql = $"SELECT c.ID,TypeID,Price,BRAND,Photo,CarName, t.Title as TypeName FROM dbo.Car as c Join dbo.Type t ON c.TypeID = t.ID  Where c.ID = {id};";
             var result = con.QuerySingle<CarViewModel>(sql);
             return result;
         }
 
         public IEnumerable<CarViewModel> GetAll()
         {
-            var sql = "SELECT c.ID,TypeID,Price,BRAND,Photo, t.Title as TypeName from dbo.Car as c Join dbo.Type t ON c.TypeID = t.ID;";
+            var sql = "SELECT c.ID,TypeID,Price,BRAND,Photo,CarName, t.Title as TypeName from dbo.Car as c Join dbo.Type t ON c.TypeID = t.ID;";
             var results = con.Query<CarViewModel>(sql).ToList();
             return results;
         }
 
         public bool Update(CarViewModel car)
         {
-            var sql = $"UPDATE dbo.Car SET TypeID = '{car.TypeId}',Price='{car.Price}',BRAND='{car.Brand}',Photo='{car.Photo}' Where ID = {car.ID};";
+            var sql = $"UPDATE dbo.Car SET TypeID = '{car.TypeId}',Price='{car.Price}',BRAND='{car.Brand}',Photo='{car.Photo}',CarName='{car.CarName}' Where ID = {car.ID};";
             con.Execute(sql, car);
             return true;
         }

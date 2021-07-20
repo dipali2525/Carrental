@@ -36,14 +36,14 @@ namespace Carrental.Models
                            new SqlBulkCopy(con))
             {
                 bulkCopy.DestinationTableName =
-                    "dbo.Type";
-                bulkCopy.ColumnMappings.Add("CarId", "CarId");
-                bulkCopy.ColumnMappings.Add("StartDate", "StartDate");
-                bulkCopy.ColumnMappings.Add("EndDate", "EndDate");
-                bulkCopy.ColumnMappings.Add("PickLocation", "PickLocation");
-                bulkCopy.ColumnMappings.Add("DropLocation", "DropLocation");
-                bulkCopy.ColumnMappings.Add("ContactNo", "ContactNo");
-                bulkCopy.ColumnMappings.Add("ContactPerson", "ContactPerson");
+                    "dbo.[Order]";
+                bulkCopy.ColumnMappings.Add("CarId", "CARID");
+                bulkCopy.ColumnMappings.Add("StartDate", "STARTDATE");
+                bulkCopy.ColumnMappings.Add("EndDate", "ENDDATE");
+                bulkCopy.ColumnMappings.Add("PickLocation", "PICK_LOCATION");
+                bulkCopy.ColumnMappings.Add("DropLocation", "DROP_LOCATION");
+                bulkCopy.ColumnMappings.Add("ContactNo", "[CONTACT NO]");
+                bulkCopy.ColumnMappings.Add("ContactPerson", "CONTACT_PERSON");
 
                 try
                 {

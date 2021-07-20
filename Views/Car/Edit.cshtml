@@ -12,13 +12,13 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+
             <div class="form-group">
                 <label asp-for="TypeId" class="control-label"></label>
                 @*<input asp-for="TypeId" class="form-control" />*@
-            <select asp-for="TypeId" asp-items="@(new SelectList(Model.CarTypes, "ID", "Title"))" class="form-control">
-                <option value="value">--Select--</option>
-            </select>
+                <select asp-for="TypeId" asp-items="@(new SelectList(Model.CarTypes, "ID", "Title"))" class="form-control">
+                    <option value="value">--Select--</option>
+                </select>
                 <span asp-validation-for="TypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -35,6 +35,11 @@
                 <label asp-for="Photo" class="control-label"></label>
                 <input asp-for="Photo" class="form-control" />
                 <span asp-validation-for="Photo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarName" class="control-label"></label>
+                <input asp-for="CarName" class="form-control" />
+                <span asp-validation-for="CarName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

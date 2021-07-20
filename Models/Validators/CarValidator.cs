@@ -8,6 +8,7 @@ namespace Carrental.Models
         {
             RuleFor(x => x.TypeId).NotEmpty().WithMessage("Type can not be empty");
             RuleFor(x => x.Price).NotEmpty().WithMessage("Price can not be empty");
+            RuleFor(x => x.CarName).NotEmpty().WithMessage("Car name can not be empty");
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Carrental.Models
         public decimal Price { get; set; }
         public string Brand { get; set; }
         public string Photo{ get; set; }
+        public string CarName { get; set; }
     }
 
 }
