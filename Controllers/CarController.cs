@@ -55,6 +55,11 @@ namespace Carrental.Controllers
                     _carRepository.Add(car);
                     return RedirectToAction(nameof(Index));
                 }
+                else
+                {
+                    var carTypes = _carTypeRepository.GetAll();
+                    car.CarTypes = carTypes;
+                }
                 return View(car);
             }
             catch (Exception ex)
@@ -87,6 +92,11 @@ namespace Carrental.Controllers
                 {
                     _carRepository.Update(car);
                     return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    var carTypes = _carTypeRepository.GetAll();
+                    car.CarTypes = carTypes;
                 }
                 return View(car);
             }

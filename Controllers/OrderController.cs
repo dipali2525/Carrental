@@ -11,11 +11,12 @@ namespace Carrental.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
-        public OrderController(IOrderRepository orderRepository)
+        private readonly ICarRepository _carRepository;
+
+        public OrderController(IOrderRepository orderRepository,ICarRepository carRepository)
         {
             this._orderRepository = orderRepository;
-
-
+            this._carRepository = carRepository;
         }
         // GET: OrderController
         public ActionResult Index()
@@ -38,7 +39,10 @@ namespace Carrental.Controllers
         // GET: OrderController/Create
         public ActionResult Create()
         {
-            return View();
+            var order = new OrderViewModel();
+            var cars = _carRepository.GetAll();
+            order.Cars = cars;
+            return View(order);
         }
 
         // POST: OrderController/Create
@@ -53,11 +57,16 @@ namespace Carrental.Controllers
                     _orderRepository.Add(order);
                     return RedirectToAction(nameof(Index));
                 }
-                return View();
+                else
+                {
+                    var cars = _carRepository.GetAll();
+                    order.Cars = cars;
+                }
+                return View(order);
             }
             catch (Exception ex)
             {
-                return View();
+                return View(order);
             }
         }
 
@@ -67,8 +76,11 @@ namespace Carrental.Controllers
             var order = _orderRepository.Find(id);
             if (order != null)
             {
+                var cars = _carRepository.GetAll();
+                order.Cars = cars;
                 return View(order);
             }
+
             return RedirectToAction("Index");
         }
 
@@ -84,11 +96,16 @@ namespace Carrental.Controllers
                     _orderRepository.Update(order);
                     return RedirectToAction(nameof(Index));
                 }
-                return View();
+                else
+                {
+                    var cars = _carRepository.GetAll();
+                    order.Cars = cars;
+                }
+                return View(order);
             }
             catch (Exception ex)
             {
-                return View();
+                return View(order);
             }
         }
 

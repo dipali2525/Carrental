@@ -78,14 +78,14 @@ namespace Carrental.Models
 
         public OrderViewModel Find(int id)
         {
-            var sql = $"SELECT ID as ID, CARID as CarId,STARTDATE as StartDate ,ENDDATE as EndDate,PICK_LOCATION as PickLocation,DROP_LOCATION as DropLocation,[CONTACT NO] as ContactNo,CONTACT_PERSON as ContactPerson FROM dbo.[Order] Where ID = {id};";
+            var sql = $"SELECT o.ID as ID, CARID as CarId,STARTDATE as StartDate ,ENDDATE as EndDate,PICK_LOCATION as PickLocation,DROP_LOCATION as DropLocation,[CONTACT NO] as ContactNo,CONTACT_PERSON as ContactPerson,c.CarName  FROM dbo.[Order] as o Join dbo.Car as c ON o.CARID = c.ID Where o.ID = {id};";
             var result = con.QuerySingle<OrderViewModel>(sql);
             return result;
         }
 
         public IEnumerable<OrderViewModel> GetAll()
         {
-            var sql = "SELECT ID as ID, CARID as CarId,STARTDATE as StartDate ,ENDDATE as EndDate,PICK_LOCATION as PickLocation,DROP_LOCATION as DropLocation,[CONTACT NO] as ContactNo,CONTACT_PERSON as ContactPerson FROM dbo.[Order];";
+            var sql = "SELECT o.ID as ID, CARID as CarId,STARTDATE as StartDate ,ENDDATE as EndDate,PICK_LOCATION as PickLocation,DROP_LOCATION as DropLocation,[CONTACT NO] as ContactNo,CONTACT_PERSON as ContactPerson,c.CarName  FROM dbo.[Order] as o Join dbo.Car as c ON o.CARID = c.ID";
             var results = con.Query<OrderViewModel>(sql).ToList();
             return results;
         }

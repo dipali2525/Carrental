@@ -15,7 +15,10 @@
            
             <div class="form-group">
                 <label asp-for="CarId" class="control-label"></label>
-                <input asp-for="CarId" class="form-control" />
+                @*<input asp-for="CarId" class="form-control" />*@
+                <select asp-for="CarId" asp-items="@(new SelectList(Model.Cars, "ID", "CarName"))" class="form-control">
+                    <option value="value">--Select--</option>
+                </select>
                 <span asp-validation-for="CarId" class="text-danger"></span>
             </div>
             <div class="form-group">
