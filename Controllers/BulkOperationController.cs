@@ -32,7 +32,7 @@ namespace Carrental.Controllers
             var title = "Upload Excel for";
             switch (id.ToLower())
             {
-                case "cartype": title = $"{title} Car Types";
+                case "type": title = $"{title} Car Types";
                     break;
                 case "car":
                     title = $"{title} Cars";
