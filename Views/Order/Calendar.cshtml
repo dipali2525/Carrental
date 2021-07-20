@@ -1,0 +1,96 @@
+﻿@model Carrental.Models.SearchViewModel
+
+@{
+    ViewData["Title"] = "Calendar";
+}
+
+<h1>Rental Calendar</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Calendar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Brand" class="control-label"></label>
+                <input asp-for="Brand" class="form-control" />
+                <span asp-validation-for="Brand" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@if (Model.IsData)
+{
+    @if (ViewBag.Data != null && ((CalendarViewModel)ViewBag.Data).Records.Count > 0)
+    {
+        <div class="row mb-2">
+            <table class="table-bordered">
+                <tr>
+                    <td>Available</td>
+                    <td style="width:50px"></td>
+                </tr>
+                <tr>
+                    <td>Booked</td>
+                    <td style="background-color:red; width:50px"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="row">
+            <table class="table-bordered">
+                <thead>
+                    <tr>
+                        <th>Cars</th>
+
+
+                        @foreach (var date in ((CalendarViewModel)ViewBag.Data).DateTimes)
+                        {
+                            <th>@date.ToString("dd/MM/yyyy")</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var records in ((CalendarViewModel)ViewBag.Data).Records)
+                    {
+                        <tr>
+                            <td>
+                                @records.Value.FirstOrDefault().Car.CarName
+                            </td>
+                            @foreach (var item in records.Value)
+                            {
+                                <td style="@(item.IsBooked ? "background-color:red" : "")">
+                                </td>
+                            }
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="text-danger">No records to show</div>
+        </div>
+    }
+}
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+

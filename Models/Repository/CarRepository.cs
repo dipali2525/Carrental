@@ -85,6 +85,15 @@ namespace Carrental.Models
             return result;
         }
 
+        public IEnumerable<CarViewModel> FindByBrand(string brand)
+        {
+            var sql = $"SELECT c.ID,TypeID,Price,BRAND,Photo,CarName, " +
+                $"t.Title as TypeName FROM dbo.Car as c " +
+                $"Join dbo.Type t ON c.TypeID = t.ID  Where c.BRAND = '{brand}';";
+            var result = con.Query<CarViewModel>(sql);
+            return result;
+        }
+
         public IEnumerable<CarViewModel> GetAll()
         {
             var sql = "SELECT c.ID,TypeID,Price,BRAND,Photo,CarName, t.Title as TypeName from dbo.Car as c Join dbo.Type t ON c.TypeID = t.ID;";

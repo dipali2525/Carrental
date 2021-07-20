@@ -1,4 +1,5 @@
-﻿using Carrental.Models;
+﻿using Carrental.Extensons;
+using Carrental.Models;
 using FluentValidation;
 using FluentValidation.Results;
 using System;
@@ -18,6 +19,7 @@ namespace Carrental.Services
         bool RemoveOrder(OrderViewModel order);
         bool ModifyOrder(OrderViewModel order);
         IEnumerable<CarViewModel> GetAllCars();
+        CalendarViewModel GetCalendarData(SearchViewModel search);
     }
     public class OrderService : IOrderService
     {
@@ -47,7 +49,7 @@ namespace Carrental.Services
         private bool IsCarAvailableForBooking(OrderViewModel order)
         {
             var orders = _orderRepository.FindByCarId(order.CarId);
-            return !orders.Any(o => o.StartDate <= order.StartDate && o.EndDate >= order.EndDate); 
+            return !orders.Any(o => o.StartDate <= order.StartDate && o.EndDate >= order.EndDate);
         }
         public IEnumerable<OrderViewModel> GetAllOrders()
         {
@@ -82,6 +84,33 @@ namespace Carrental.Services
         public IEnumerable<CarViewModel> GetAllCars()
         {
             return _carRepository.GetAll();
+        }
+
+        public CalendarViewModel GetCalendarData(SearchViewModel search)
+        {
+            var calendar = new CalendarViewModel();
+            var dates = search.StartDate.Range(search.EndDate).OrderBy(x => x);
+            calendar.DateTimes = dates;
+            var cars = _carRepository.FindByBrand(search.Brand);
+            cars = cars.OrderBy(c => c.CarName);
+            var orders = _orderRepository.FindByDateAndBrand(search.StartDate, search.EndDate, search.Brand);
+
+            foreach (var car in cars)
+            {
+                var bookingRecords =  new List<CarBookingRecord>();
+                foreach (var date in dates)
+                {
+                    var bookingRecord = new CarBookingRecord()
+                    {
+                        Car = car,
+                        DateTime = date,
+                        IsBooked = orders.Any(o => o.CarId == car.ID && o.StartDate <= date && o.EndDate >= date)
+                    };
+                    bookingRecords.Add(bookingRecord);
+                }
+                calendar.Records.TryAdd(car.ID, bookingRecords);
+            }
+            return calendar;
         }
     }
 }

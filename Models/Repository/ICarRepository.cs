@@ -10,5 +10,6 @@ namespace Carrental.Models
         bool Add(IEnumerable<CarViewModel> cars);
         bool Delete(CarViewModel car);
         bool Update(CarViewModel car);
+        IEnumerable<CarViewModel> FindByBrand(string brand);
     }
 }

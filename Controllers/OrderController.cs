@@ -143,5 +143,30 @@ namespace Carrental.Controllers
                 return View(order);
             }
         }
+
+        public ActionResult Calendar()
+        {
+            SearchViewModel searchViewModel = new SearchViewModel();
+            return View(searchViewModel);
+        }
+        // POST: OrderController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Calendar(SearchViewModel searchViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ViewBag.Data = _orderService.GetCalendarData(searchViewModel);
+                    searchViewModel.IsData = true;
+                }
+                return View(searchViewModel);
+            }
+            catch(Exception ex)
+            {
+                return View(searchViewModel);
+            }
+        }
     }
 }

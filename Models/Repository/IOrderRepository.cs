@@ -14,5 +14,6 @@ namespace Carrental.Models
         bool Delete(OrderViewModel order);
         bool Update(OrderViewModel order);
         IEnumerable<OrderViewModel> FindByCarId(int id);
+        IEnumerable<OrderViewModel> FindByDateAndBrand(DateTime startDate, DateTime endDate, string brand);
     }
 }
