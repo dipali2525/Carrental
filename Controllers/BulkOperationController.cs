@@ -53,7 +53,7 @@ namespace Carrental.Controllers
                 ViewBag.Message = GetTitle(id);
                 var memoryStream = new MemoryStream();
                 await formFile.CopyToAsync(memoryStream);
-                var bulkOperation = _bulkDataServiceFactory.Add(id);
+                var bulkOperation = _bulkDataServiceFactory.GetBulkOperator(id);
                 var isAdded = bulkOperation.Add(memoryStream);
                 if (isAdded)
                 {

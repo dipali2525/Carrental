@@ -19,7 +19,7 @@ namespace Carrental.Factories
             }
         }
 
-        public IBulkOperation Add(string typeName)
+        public IBulkOperation GetBulkOperator(string typeName)
         {
             return _services.ContainsKey(typeName) ? _services[typeName] : _services["type"];
         }

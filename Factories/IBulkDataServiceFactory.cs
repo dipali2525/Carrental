@@ -2,6 +2,6 @@
 {
     public interface IBulkDataServiceFactory
     {
-        IBulkOperation Add(string typeName);
+        IBulkOperation GetBulkOperator(string typeName);
     }
 }
